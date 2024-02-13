@@ -1,0 +1,4 @@
+template-file-path: ./network/vpc.yaml
+
+parameters:
+  VPCName: "Production-VPC"
