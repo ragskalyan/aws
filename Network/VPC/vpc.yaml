@@ -140,6 +140,12 @@ Resources:
       RouteTableId: !Ref RouteTablePrivate
       SubnetId: !Ref PrivateSubnet4
 
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow SSH and HTTP/HTTPS traffic"
+      VpcId: !Ref VPC
+
   SecurityGroupIngressSSH:
     Type: AWS::EC2::SecurityGroupIngress
     Properties:
