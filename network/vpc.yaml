@@ -243,9 +243,6 @@ Resources:
       RuleAction: allow
       Protocol: -1
       CidrBlock: 0.0.0.0/0
-      # PortRange:
-      #   From: 0
-      #   To: 65535
 
   PublicOutboudRule:
     Type: AWS::EC2::NetworkAclEntry
@@ -256,9 +253,126 @@ Resources:
       Protocol: -1
       CidrBlock: 0.0.0.0/0
       Egress: true
-      # PortRange:
-      #   From: 0
-      #   To: 65535
+
+  PrivateAInboudRule:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateANetworkAcl
+      RuleNumber: 100
+      RuleAction: allow
+      Protocol: -1
+      CidrBlock: !Ref CidrBlock
+
+  PrivateAOutboudRule:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateANetworkAcl
+      RuleNumber: 100
+      RuleAction: allow
+      Protocol: -1
+      CidrBlock: !Ref CidrBlock
+      Egress: true
+
+  PrivateBInboudRuleA:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 100
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetACidrBlock
+      PortRange:
+        From: 22
+        To: 22
+
+  PrivateBOutboudRuleA:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 100
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetACidrBlock
+      Egress: true
+      PortRange:
+        From: 22
+        To: 22
+
+  PrivateBInboudRuleA1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 100
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetBCidrBlock
+      PortRange:
+        From: 22
+        To: 22
+
+  PrivateBOutboudRuleA1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 100
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetBCidrBlock
+      Egress: true
+      PortRange:
+        From: 22
+        To: 22
+
+  PrivateBInboudRuleB:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 200
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetACidrBlock
+      PortRange:
+        From: 27017
+        To: 27017
+
+  PrivateBOutboudRuleB:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 200
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetACidrBlock
+      Egress: true
+      PortRange:
+        From: 27017
+        To: 27017
+
+  PrivateBInboudRuleB1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 200
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetBCidrBlock
+      PortRange:
+        From: 27017
+        To: 27017
+
+  PrivateBOutboudRuleB1:
+    Type: AWS::EC2::NetworkAclEntry
+    Properties:
+      NetworkAclId: !Ref PrivateBNetworkAcl
+      RuleNumber: 200
+      RuleAction: allow
+      Protocol: 6
+      CidrBlock: !Ref PrivateSubnetBCidrBlock
+      Egress: true
+      PortRange:
+        From: 27017
+        To: 27017
+
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
