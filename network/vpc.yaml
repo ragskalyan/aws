@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'AWS CloudFormation Sample Template VPC. Creates a VPC with four public and four private subnets in two different Availability Zones.'
 
 Parameters:
-  VpcName:
+  VPCName:
     Description: The name of the VPC
     Type: String
     Default: Development-VPC
@@ -20,7 +20,7 @@ Resources:
       EnableDnsHostnames: 'true'
       Tags:
         - Key: "Name"
-          Value: !Ref VpcName
+          Value: !Ref VPCName
         - Key: "Owner"
           Value: "Kayan"
 
