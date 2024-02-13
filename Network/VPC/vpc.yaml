@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'AWS CloudFormation Sample Template VPC: Creates a VPC with four public and four private subnets in two different Availability Zones.'
+Description: 'AWS CloudFormation Sample Template VPC. Creates a VPC with four public and four private subnets in two different Availability Zones.'
 
 Parameters:
   VpcName:
