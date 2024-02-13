@@ -374,7 +374,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: !Sub StackName-SG
+        Value: Core-SG
 
   SecurityGroupIngressSSH:
     Type: AWS::EC2::SecurityGroupIngress
