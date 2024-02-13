@@ -5,7 +5,7 @@ Parameters:
   VpcName:
     Description: The name of the VPC
     Type: String
-    Default: MyVPC
+    Default: Development-VPC
   CidrBlock:
     Description: The CIDR block for the VPC
     Type: String
@@ -18,6 +18,11 @@ Resources:
       CidrBlock: !Ref CidrBlock
       EnableDnsSupport: 'true'
       EnableDnsHostnames: 'true'
+      Tags:
+        - Key: "Name"
+          Value: !Ref VpcName
+        - Key: "Owner"
+          Value: "Kayan"
 
   PublicSubnet1:
     Type: AWS::EC2::Subnet
@@ -145,6 +150,9 @@ Resources:
     Properties:
       GroupDescription: "Allow SSH and HTTP/HTTPS traffic"
       VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: !Sub :StackName-SG
 
   SecurityGroupIngressSSH:
     Type: AWS::EC2::SecurityGroupIngress
