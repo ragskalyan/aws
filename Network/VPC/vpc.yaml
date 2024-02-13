@@ -97,13 +97,13 @@ Resources:
         Value: !Sub :StackName-Public-RT
 
   RouteTableAssociationPublic1:
-    Type: AWS::EC2::RouteTableAssociation
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTablePublic
       SubnetId: !Ref PublicSubnet1
 
   RouteTableAssociationPublic2:
-    Type: AWS::EC2::RouteTableAssociation
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTablePublic
       SubnetId: !Ref PublicSubnet2
@@ -117,25 +117,25 @@ Resources:
         Value: !Sub :StackName-Private-RT
 
   RouteTableAssociationPrivate1:
-    Type: AWS::EC2::RouteTableAssociation
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTablePrivate
       SubnetId: !Ref PrivateSubnet1
 
   RouteTableAssociationPrivate2:
-    Type: AWS::EC2::RouteTableAssociation
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTablePrivate
       SubnetId: !Ref PrivateSubnet2
 
   RouteTableAssociationPrivate3:
-    Type: AWS::EC2::RouteTableAssociation
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTablePrivate
       SubnetId: !Ref PrivateSubnet3
 
   RouteTableAssociationPrivate4:
-    Type: AWS::EC2::RouteTableAssociation
+    Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       RouteTableId: !Ref RouteTablePrivate
       SubnetId: !Ref PrivateSubnet4
