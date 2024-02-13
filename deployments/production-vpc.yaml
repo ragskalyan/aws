@@ -2,3 +2,10 @@ template-file-path: ./network/vpc.yaml
 
 parameters:
   VPCName: "Production-VPC"
+  CidrBlock: "192.168.0.0/16"
+  PublicSubnetACidrBlock: "192.168.0.0/24"
+  PublicSubnetBCidrBlock: "192.168.1.0/24"
+  PrivateSubnetACidrBlock: "192.168.2.0/24"
+  PrivateSubnetBCidrBlock: "192.168.3.0/24"
+  PrivateSubnetCCidrBlock: "192.168.4.0/24"
+  PrivateSubnetDCidrBlock: "192.168.5.0/24"
