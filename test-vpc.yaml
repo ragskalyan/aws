@@ -1,0 +1,17 @@
+Parameters:
+  VpcName:
+    Description: The name of the VPC
+    Type: String
+    Default: MyVPC
+  CidrBlock:
+    Description: The CIDR block for the VPC
+    Type: String
+    Default: 10.0.0.0/16
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref CidrBlock
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
