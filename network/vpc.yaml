@@ -55,6 +55,9 @@ Resources:
       CidrBlock: !Ref PublicSubnetACidrBlock
       VpcId: !Ref VPC
       MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: Public-Subnet-A
 
   PublicSubnet2:
     Type: AWS::EC2::Subnet
@@ -63,6 +66,9 @@ Resources:
       CidrBlock: !Ref PublicSubnetBCidrBlock
       VpcId: !Ref VPC
       MapPublicIpOnLaunch: 'true'
+      Tags:
+        - Key: Name
+          Value: Public-Subnet-B
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -71,8 +77,8 @@ Resources:
       CidrBlock: !Ref PrivateSubnetACidrBlock
       VpcId: !Ref VPC
       Tags:
-      - Key: Name
-        Value: !Sub StackName-Private-A
+        - Key: Name
+          Value: Private-Subnet-A
 
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
@@ -81,8 +87,8 @@ Resources:
       CidrBlock: !Ref PrivateSubnetBCidrBlock
       VpcId: !Ref VPC
       Tags:
-      - Key: Name
-        Value: !Sub StackName-Private-B
+        - Key: Name
+          Value: Private-Subnet-B
 
   PrivateSubnet3:
     Type: AWS::EC2::Subnet
@@ -91,8 +97,8 @@ Resources:
       CidrBlock: !Ref PrivateSubnetCCidrBlock
       VpcId: !Ref VPC
       Tags:
-      - Key: Name
-        Value: !Sub StackName-Private-C
+        - Key: Name
+          Value: Private-Subnet-C
 
   PrivateSubnet4:
     Type: AWS::EC2::Subnet
@@ -101,8 +107,8 @@ Resources:
       CidrBlock: !Ref PrivateSubnetDCidrBlock
       VpcId: !Ref VPC
       Tags:
-      - Key: Name
-        Value: !Sub StackName-Private-D
+        - Key: Name
+          Value: Private-Subnet-D
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -123,7 +129,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: !Sub StackName-Public-RT
+        Value: Public-Subnet-RT
 
   RouteTableAssociationPublic1:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -143,7 +149,7 @@ Resources:
       VpcId: !Ref VPC
       Tags:
       - Key: Name
-        Value: !Sub StackName-Private-RT
+        Value: Private-Subnet-RT
 
   RouteTableAssociationPrivate1:
     Type: AWS::EC2::SubnetRouteTableAssociation
@@ -168,6 +174,66 @@ Resources:
     Properties:
       RouteTableId: !Ref RouteTablePrivate
       SubnetId: !Ref PrivateSubnet4
+
+  PublicNetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Public-NetworkAcl
+
+  SubnetNetworkAclAssociationPublic1:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      NetworkAclId: !Ref PublicNetworkAcl
+
+  SubnetNetworkAclAssociationPublic2:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      NetworkAclId: !Ref PublicNetworkAcl
+
+  PrivateANetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Private-NetworkAcl-A
+
+  SubnetNetworkAclAssociationPrivate1:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+      NetworkAclId: !Ref PrivateANetworkAcl
+
+  SubnetNetworkAclAssociationPrivate2:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+      NetworkAclId: !Ref PrivateANetworkAcl
+
+  PrivateBNetworkAcl:
+    Type: AWS::EC2::NetworkAcl
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Private-NetworkAcl-B
+
+  SubnetNetworkAclAssociationPrivate3:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet3
+      NetworkAclId: !Ref PrivateBNetworkAcl
+
+  SubnetNetworkAclAssociationPrivate4:
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet4
+      NetworkAclId: !Ref PrivateBNetworkAcl
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
