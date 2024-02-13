@@ -22,7 +22,7 @@ Resources:
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [0, !GetAZs, !Ref AWS::Region]
+      AvailabilityZone: !Select [0, !GetAZs ""]
       CidrBlock: 10.0.0.0/24
       VpcId: !Ref VPC
       MapPublicIpOnLaunch: 'true'
@@ -30,7 +30,7 @@ Resources:
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [1, !GetAZs, !Ref AWS::Region]
+      AvailabilityZone: !Select [1, !GetAZs ""]
       CidrBlock: 10.0.1.0/24
       VpcId: !Ref VPC
       MapPublicIpOnLaunch: 'true'
@@ -38,7 +38,7 @@ Resources:
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [0, !GetAZs, !Ref AWS::Region]
+      AvailabilityZone: !Select [0, !GetAZs ""]
       CidrBlock: 10.0.2.0/24
       VpcId: !Ref VPC
       Tags:
@@ -48,7 +48,7 @@ Resources:
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [1, !GetAZs, !Ref AWS::Region]
+      AvailabilityZone: !Select [1, !GetAZs ""]
       CidrBlock: 10.0.3.0/24
       VpcId: !Ref VPC
       Tags:
@@ -58,7 +58,7 @@ Resources:
   PrivateSubnet3:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [0, !GetAZs, !Ref AWS::Region]
+      AvailabilityZone: !Select [0, !GetAZs ""]
       CidrBlock: 10.0.6.0/24
       VpcId: !Ref VPC
       Tags:
@@ -68,7 +68,7 @@ Resources:
   PrivateSubnet4:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: !Select [1, !GetAZs, !Ref AWS::Region]
+      AvailabilityZone: !Select [1, !GetAZs ""]
       CidrBlock: 10.0.7.0/24
       VpcId: !Ref VPC
       Tags:
