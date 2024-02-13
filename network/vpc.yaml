@@ -9,31 +9,24 @@ Parameters:
   CidrBlock:
     Description: The CIDR block for the VPC
     Type: String
-    Default: 10.0.0.0/16
   PublicSubnetACidrBlock:
     Description: "The CIDR block for the Public Subnet A"
     Type: String
-    Default: 10.0.0.0/24
   PublicSubnetBCidrBlock:
     Description: "The CIDR block for the Public Subnet B"
     Type: String
-    Default: 10.0.1.0/24
   PrivateSubnetACidrBlock:
     Description: "The CIDR block for the Private Subnet A"
     Type: String
-    Default: 10.0.2.0/24
   PrivateSubnetBCidrBlock:
     Description: "The CIDR block for the Private Subnet B"
     Type: String
-    Default: 10.0.3.0/24
   PrivateSubnetCCidrBlock:
     Description: "The CIDR block for the Private Subnet C"
     Type: String
-    Default: 10.0.4.0/24
   PrivateSubnetDCidrBlock:
     Description: "The CIDR block for the Private Subnet D"
     Type: String
-    Default: 10.0.5.0/24
 
 Resources:
   VPC:

@@ -1,1 +1,11 @@
 template-file-path: ./network/vpc.yaml
+
+parameters:
+  VPCName: "Development-VPC"
+  CidrBlock: "10.0.0.0/16"
+  PublicSubnetACidrBlock: "10.0.0.0/24"
+  PublicSubnetBCidrBlock: "10.0.1.0/24"
+  PrivateSubnetACidrBlock: "10.0.2.0/24"
+  PrivateSubnetBCidrBlock: "10.0.3.0/24"
+  PrivateSubnetCCidrBlock: "10.0.4.0/24"
+  PrivateSubnetDCidrBlock: "10.0.5.0/24"
