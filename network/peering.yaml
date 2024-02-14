@@ -6,6 +6,6 @@ Resources:
     Type: AWS::EC2::VPCPeeringConnection
     Properties:
       VpcId: !ImportValue Development-VPC
-      PeerVpcId: !ImportValue Production-VPC
+      PeerVpcId: vpc-0cdde8fb1c2492365
       PeerRegion: "ap-south-1"
 
