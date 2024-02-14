@@ -7,8 +7,4 @@ Resources:
     Properties:
       VpcId: !ImportValue Development-VPC
       PeerVpcId: !ImportValue Production-VPC
-  
-  AcceptPeeringConnection:
-    Type: AWS::EC2::VPCPeeringConnectionAccepter
-    Properties:
-      VpcPeeringConnectionId: !Ref VPCPeeringConnection
+
