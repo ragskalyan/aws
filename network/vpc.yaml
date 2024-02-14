@@ -408,7 +408,7 @@ Outputs:
     Description: The ID of the VPC
     Value: !Ref VPC
     Export:
-      Name: !Ref VPCName-Id
+      Name: !Ref VPCName
   VpcCIDR:
     Description: The CIDR block of the VPC
     Value: !Ref CidrBlock
