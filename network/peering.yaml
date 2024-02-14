@@ -7,4 +7,5 @@ Resources:
     Properties:
       VpcId: !ImportValue Development-VPC
       PeerVpcId: !ImportValue Production-VPC
+      PeerRegion: ap-south-1
 
