@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Create ECS Cluster'
+
+
+Parameters:
+  ClusterName:
+    Type: String
+    Default: Development-Cluster
+
+Resources:
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      Tags:
+        Key: Name
+        Value: !Ref ClusterName
