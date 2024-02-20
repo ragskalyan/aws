@@ -436,3 +436,5 @@ Outputs:
   SecurityGroupId:
     Description: The ID of the security group
     Value: !Ref SecurityGroup
+    Export:
+      Name: Core-IO-SG
