@@ -1,16 +1,74 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Create ECS Cluster'
-
+Description: 'Create ECS Cluster and EC2 instances'
 
 Parameters:
   ClusterName:
     Type: String
     Default: Development-Cluster
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+  InstanceType:
+    Type: String
+    Default: t2.micro
+    Description: EC2 instance type
+  InstanceCount:
+    Type: Number
+    Default: 1
+    Description: Number of EC2 instances to create
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: VPC Id
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: Subnets for the ECS instances
 
 Resources:
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
+      ClusterName: !Ref ClusterName
+
+  ECSLaunchConfiguration:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      LaunchConfigurationName: !Sub ${ClusterName}-LaunchConfig
+      ImageId: ami-0862dc74889405a86
+      InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
+      SecurityGroups:
+        - !Ref ECSClusterSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          echo ECS_CLUSTER=${ClusterName} >> /etc/ecs/ecs.config
+
+  ECSClusterSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ECS Cluster Security Group
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+
+  ECSAutoscalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AutoScalingGroupName: !Sub ${ClusterName}-AutoscalingGroup
+      LaunchConfigurationName: !Ref ECSLaunchConfiguration
+      MinSize: 1
+      MaxSize: 1
+      DesiredCapacity: !Ref InstanceCount
+      VPCZoneIdentifier: !Ref Subnets
       Tags:
-        Key: Name
-        Value: !Ref ClusterName
+        - Key: Name
+          Value: !Ref ClusterName
+          PropagateAtLaunch: true

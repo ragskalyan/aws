@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Create ECS Cluster and EC2 instances'
+
+
+Parameters:
+  ClusterName:
+    Type: String
+    Default: "Development-Cluster"
+
+
+Resources:
+  EC2LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: "ECS-Launch-Template"
+      LaunchTemplateData:
+        ImageId: ami-0862dc74889405a86
+        InstanceType: t2.micro
+        KeyName: mykey
+        SecurityGroupIds:
+          - !ImportValue Core-IO-SG
+
+  ECSASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      DesiredCapacity: 1
+      MinSize: 1
+      MaxSize: 1
+      LaunchTemplate:
+        LaunchTemplateId: !Ref EC2LaunchTemplate
+        Version: !GetAtt EC2LaunchTemplate.LatestVersionNumber
+      VPCZoneIdentifier: 
+        - subnet-05c938b1963320900
+        - subnet-066aab03120b90a8e
+
+  ECSCluster:
+    Type: "AWS::ECS::Cluster"
+    Properties:
+      ClusterName: !Ref ClusterName
+
+
+  ECSCapacityProvider:
+    Type: AWS::ECS::CapacityProvider
+    Properties:
+      AutoScalingGroupProvider:
+        AutoScalingGroupArn: !Ref ECSASG
+        ManagedScaling:
+          MaximumScalingStepSize: 2
+          MinimumScalingStepSize: 1
+          Status: ENABLED
+          TargetCapacity: 100
+        ManagedTerminationProtection: DISABLED
+
+  ClusterCPAssociation:
+    Type: "AWS::ECS::ClusterCapacityProviderAssociations"
+    Properties:
+      CapacityProviders:
+        - !Ref ECSCapacityProvider
+      Cluster: !Ref ECSCluster
+      DefaultCapacityProviderStrategy:
+        - Base: 1
+          Weight: 1
+          CapacityProvider: !Ref ECSCapacityProvider
+
