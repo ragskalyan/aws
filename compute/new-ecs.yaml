@@ -1,64 +1,73 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Create ECS Cluster and EC2 instances'
+AWSTemplateFormatVersion: '2010-09-09' # Specifies the version of the AWS CloudFormation template format
 
+Description: 'Create ECS Cluster and EC2 instances' # A brief description of what the template does
 
+# Defines a parameter for the cluster name with a default value
 Parameters:
   ClusterName:
     Type: String
     Default: "Development-Cluster"
 
+  InstanceType:
+    Description: The type of instance to use for the EC2 instances.
+    Type: String
+    Default: t2.micro
 
+# Defines the resources section where all the resources are created
 Resources:
+  # Defines an EC2 launch template resource with the specified properties
   EC2LaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
       LaunchTemplateName: "ECS-Launch-Template"
       LaunchTemplateData:
-        ImageId: ami-0862dc74889405a86
-        InstanceType: t2.micro
-        KeyName: mykey
-        SecurityGroupIds:
+        ImageId: ami-0862dc74889405a86 # The AMI ID for the EC2 instances
+        InstanceType: !Ref InstanceType # The instance type for the EC2 instances
+        KeyName: mykey # The key pair name to use for the EC2 instances
+        SecurityGroupIds: # The security groups to associate with the EC2 instances
           - !ImportValue Core-IO-SG
 
+  # Defines an Auto Scaling group resource with the specified properties
   ECSASG:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
-      DesiredCapacity: 1
-      MinSize: 1
-      MaxSize: 1
-      LaunchTemplate:
+      DesiredCapacity: 1 # The number of EC2 instances to launch
+      MinSize: 1 # The minimum number of EC2 instances to maintain
+      MaxSize: 1 # The maximum number of EC2 instances to launch
+      LaunchTemplate: # The launch template to use for the EC2 instances
         LaunchTemplateId: !Ref EC2LaunchTemplate
         Version: !GetAtt EC2LaunchTemplate.LatestVersionNumber
-      VPCZoneIdentifier: 
+      VPCZoneIdentifier: # The VPC subnets to launch the EC2 instances in
         - subnet-05c938b1963320900
         - subnet-066aab03120b90a8e
 
+  # Defines an ECS cluster resource with the specified properties
   ECSCluster:
     Type: "AWS::ECS::Cluster"
     Properties:
       ClusterName: !Ref ClusterName
 
-
+  # Defines an ECS capacity provider resource with the specified properties
   ECSCapacityProvider:
     Type: AWS::ECS::CapacityProvider
     Properties:
-      AutoScalingGroupProvider:
+      AutoScalingGroupProvider: # The Auto Scaling group to use for the capacity provider
         AutoScalingGroupArn: !Ref ECSASG
-        ManagedScaling:
+        ManagedScaling: # The managed scaling settings for the capacity provider
           MaximumScalingStepSize: 2
           MinimumScalingStepSize: 1
           Status: ENABLED
           TargetCapacity: 100
         ManagedTerminationProtection: DISABLED
 
+  # Defines a cluster capacity provider association resource with the specified properties
   ClusterCPAssociation:
     Type: "AWS::ECS::ClusterCapacityProviderAssociations"
     Properties:
-      CapacityProviders:
+      CapacityProviders: # The capacity providers to associate with the cluster
         - !Ref ECSCapacityProvider
-      Cluster: !Ref ECSCluster
-      DefaultCapacityProviderStrategy:
-        - Base: 1
-          Weight: 1
-          CapacityProvider: !Ref ECSCapacityProvider
-
+      Cluster: !Ref ECSCluster # The cluster to associate the capacity providers with
+      DefaultCapacityProviderStrategy: # The default capacity provider strategy for the cluster
+        - Base: 1 # The base number of tasks to run on the capacity provider
+          Weight: 1 # The weight of the capacity provider in the capacity provider strategy
+          CapacityProvider: !Ref ECSCapacityProvider # The capacity provider to use in the capacity provider strategy
