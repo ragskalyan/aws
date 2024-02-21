@@ -108,7 +108,7 @@ Resources:
     Properties:
       Tags:
       - Key: Name
-        Value: !Sub StackName-IGW
+        Value: IGW
 
   VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -123,6 +123,13 @@ Resources:
       Tags:
       - Key: Name
         Value: Public-Subnet-RT
+  
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTablePublic
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
 
   RouteTableAssociationPublic1:
     Type: AWS::EC2::SubnetRouteTableAssociation
